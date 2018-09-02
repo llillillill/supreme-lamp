@@ -30,6 +30,10 @@
 			$sql="INSERT INTO user (username, email, phone) VALUES ('$username', '$email', '$phone')";
 			$conn->query($sql);
             $hashed_password=password_hash($password,PASSWORD_DEFAULT);
+            //now store the hashed password in the login page
+            $sql="SELECT u_id FROM user WHERE username='$username'";
+            $result=conn->query($sql);
+            $sql="INSERT INTO login ("
             var_dump($hashed_password);
             
 			 echo "<script> location.href='index.php'; </script>";
