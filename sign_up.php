@@ -25,13 +25,14 @@
 
 		//checking if two passwords are same
 		if($password==$confirm_pass){
-			//now update db
-			echo 'done!';
+			//now update user table
 			$sql="INSERT INTO user (username, email, phone) VALUES ('$username', '$email', '$phone')";
 			$conn->query($sql);
+
 			$hashed_password=password_hash($password,PASSWORD_DEFAULT);
-			var_dump($hashed_password);
-            //now store the hashed password in the login page
+
+			//now store the hashed password in the login table
+			//this sql is to fetch foreign key
 			$sql="SELECT u_id FROM user WHERE username='$username'";
 
 			$result=$conn->query($sql);
@@ -40,6 +41,7 @@
 
 			echo $row["u_id"];
 
+			//now finally storing into login
 			$sql="INSERT INTO login (u_id,username,password) VALUES ('$row[u_id]','$username','$hashed_password')";
 			
 			$conn->query($sql);
