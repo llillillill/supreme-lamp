@@ -29,13 +29,22 @@
 			echo 'done!';
 			$sql="INSERT INTO user (username, email, phone) VALUES ('$username', '$email', '$phone')";
 			$conn->query($sql);
-            $hashed_password=password_hash($password,PASSWORD_DEFAULT);
+			$hashed_password=password_hash($password,PASSWORD_DEFAULT);
+			var_dump($hashed_password);
             //now store the hashed password in the login page
-            $sql="SELECT u_id FROM user WHERE username='$username'";
-            $result=conn->query($sql);
-            $sql="INSERT INTO login ("
-            var_dump($hashed_password);
-            
+			$sql="SELECT u_id FROM user WHERE username='$username'";
+
+			$result=$conn->query($sql);
+
+			$row=$result->fetch_assoc();
+
+			echo $row["u_id"];
+
+			$sql="INSERT INTO login (u_id,username,password) VALUES ('$row[u_id]','$username','$hashed_password')";
+			
+			$conn->query($sql);
+
+           //now redirect to login page 
 			 echo "<script> location.href='index.php'; </script>";
 			 exit;
 
