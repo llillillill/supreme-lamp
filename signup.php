@@ -3,7 +3,6 @@
 <?php session_start() ?>
  <h1> SIGNUP </h1>
  <form action="sign_up.php" method="post">
- 	<h3>due to lazy developer, no email validation is required (also feel free to spam)</h3>
  	<h3> just provide a unique username</h3>
     
  	User Name: <input type="text" name="username"><br>
