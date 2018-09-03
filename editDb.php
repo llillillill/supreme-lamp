@@ -2,7 +2,13 @@
 <body>
 
 <h3> edit the info of an existing book</h3>
-<?php session_start();
+<a href="userHome.php"> your library </a>
+<?php 
+    //in order to prevent confirm form resubmission
+    header("Cache-Control: no cache");
+    session_cache_limiter("private_no_expire");
+    session_start();
+//i have to check if it is working
     if(!empty($_SESSION['restore_sucess']))
     {
         echo $_SESSION['restore_success'];
@@ -32,15 +38,35 @@
         //then check if the book has been deleted
         $row=$result->fetch_assoc();
         //here the result will be printed
-        //echo "<"
+        echo "title: ".$row['title']."<br>";
+        echo "author: ".$row['author']."<br>";
+        echo "category: ".$row['category']."<br>";
+        echo "isbn: ".$row['isbn']."<br>";
+        echo "entry time: ".$row['entry_time']."<br>";
+            
+        $_SESSION['b_id']=$b_id;
+
         if($row['is_deleted']==1) {
             echo "the book has been deleted<br>";
             echo "restore the book?<br>";
             //now restoring the books
             //logout needs to be added
-            $_SESSION['b_id']=$b_id;
-            echo("<form action='delete.php' method='post' ><input type='submit'  value='restore' name='restore'></form>");             
+            echo("<form action='edit_db.php' method='post' ><input type='submit'  value='restore' name='restore'></form>");             
            
+        }
+        else {
+            echo 'submit the new values below<br>';
+            echo '<form action="edit_db.php" method="post"><br>';
+            echo 'title: <input type="text" name="title"><br>';
+            echo 'author: <input type="text" name="author"><br>';
+            echo 'category: <input type="text" name="category"><br>';
+            echo 'isbn: <input type="text" name="isbn"><br>';
+            echo '<input type="submit" value="edit" name="edit"><br>';
+            echo '</form>';
+            echo 'or delete this book<br>';
+            echo("<form action='edit_db.php' method='post' ><input type='submit'  value='delete' name='delete'></form>");             
+
+
         }
 
 

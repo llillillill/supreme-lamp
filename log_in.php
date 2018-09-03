@@ -8,6 +8,8 @@
         //check if empty
         if(empty($username)||empty($password)){
             $_SESSION['empty_info']="submit the form with data";
+            echo "<script> location.href='index.php'; </script>"; 
+            exit;
         }
 
         else {
