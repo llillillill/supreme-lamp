@@ -29,7 +29,6 @@
 		echo $_SESSION['empty_info'];
 		unset($_SESSION['empty_info']);
 	}
-	else  echo "<script> location.href='home.php'; </script>"; 
  ?>
 
 

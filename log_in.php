@@ -39,6 +39,7 @@
                 $result=$conn->query($sql);
                 $u_id=$result->fetch_assoc();
                 $_SESSION["u_id"]=$u_id['u_id'];
+	         echo "<script> location.href='home.php'; </script>"; 
             //then the list will start here
             }
         else $_SESSION['wrong_login_info']="wrong username / password"."<br>"."login failed";
