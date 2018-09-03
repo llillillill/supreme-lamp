@@ -25,10 +25,11 @@
 		unset($_SESSION['wrong_login_info']);
 	}
 	//empty info
-	if(!empty($_SESSION['empty_info'])){
+	else if(!empty($_SESSION['empty_info'])){
 		echo $_SESSION['empty_info'];
 		unset($_SESSION['empty_info']);
 	}
+	else  echo "<script> location.href='home.php'; </script>"; 
  ?>
 
 
