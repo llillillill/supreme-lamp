@@ -1,8 +1,14 @@
 <html>
 <body>
-<?php session_start()?>
-<h3> edit the info of an existing book</h3>
 
+<h3> edit the info of an existing book</h3>
+<?php session_start();
+    if(!empty($_SESSION['restore_sucess']))
+    {
+        echo $_SESSION['restore_success'];
+        unset($_SESSION['restore_success']);
+    }
+?>
 <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>' method="POST">
     book id:<input type="text" name="b_id"><br>
     <input type="submit" value="look up">
@@ -25,18 +31,16 @@
 
         //then check if the book has been deleted
         $row=$result->fetch_assoc();
-
+        //here the result will be printed
+        //echo "<"
         if($row['is_deleted']==1) {
             echo "the book has been deleted<br>";
             echo "restore the book?<br>";
             //now restoring the books
             //logout needs to be added
-            echo("<form action='delete.php' method='post'><input type='submit' name='restore' value='restore'></form>");             
-            if(isset($_POST['restore'])){
-                $sql="UPDATE `book` SET `is_deleted` = '0' WHERE `book`.`b_id` = 'b_id' ";
-                $conn->query($sql);
-                echo "restored!";
-            }
+            $_SESSION['b_id']=$b_id;
+            echo("<form action='delete.php' method='post' ><input type='submit'  value='restore' name='restore'></form>");             
+           
         }
 
 
