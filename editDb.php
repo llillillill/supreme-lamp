@@ -9,8 +9,7 @@
     header("Cache-Control: no cache");
     session_cache_limiter("private_no_expire");
     session_start();
-//i have to check if it is working
-//also other work messages should be added here
+    //messages upon completion
     if(!empty($_SESSION['restore_sucess']))
     {
         echo $_SESSION['restore_success'];

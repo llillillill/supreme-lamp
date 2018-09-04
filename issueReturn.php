@@ -3,7 +3,26 @@
 
 <?php session_start() ?>
 <a href="userHome.php"> your library </a>
-
+<?php 
+   // in order to prevent confirm form resubmission
+    header("Cache-Control: no cache");
+    session_cache_limiter("private_no_expire");
+    session_start();
+    //messages upon completion
+    if(!empty($_SESSION['return_success']))
+    {
+        echo $_SESSION['return_success'];
+        unset($_SESSION['return_success']);
+    }
+    if(!empty($_SESSION['delete_success'])){
+        echo $_SESSION['delete_success'];
+        unset($_SESSION['delete_success']);
+    }
+    if(!empty($_SESSION['edit_success'])){
+        echo $_SESSION['edit_success'];
+        unset ($_SESSION['edit_success']);
+    }
+?>
 <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>' method="POST">
     book id:<input type="text" name="b_id"><br>
     <input type="submit" value="look up">
@@ -48,12 +67,12 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     
      else{
          //not exists/ exists
-        $sql="SELECT i.i_id, i.borrower from issue i  where i.b_id='$b_id' and exists(select i_id from return_info r where r.i_id=i.i_id)";
+        $sql="SELECT i.i_id, i.borrower from issue i  where i.b_id='$b_id' and not exists(select i_id from return_info r where r.i_id=i.i_id)";
         $result=$conn->query($sql);
 
         if($result->num_rows!=0){
             $row=$result->fetch_assoc();
-            
+
             $borrower=$row['borrower'];
             $sql="SELECT username FROM user WHERE u_id='$borrower'";
 
@@ -65,38 +84,20 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
         
             //get i_id for return_info 
             $_SESSION['i_id']=$row['i_id'];
-            echo("<form action='issue_return.php' method='post' ><input type='submit'  value='returned' name='returned'></form>");
+            echo("<form action='issue_return.php' method='post' ><input type='submit'  value='returned' name='return'></form>");
         }
 
 
+        //or available for issuing
         else {
             echo "the book is available for issuing<br>";
             echo "enter the name of the user: <br>";
             echo '<form action="issue_return.php" method="post">';
-            echo 'username: <input type="text" name="name"><br>';
+            echo 'username: <input type="text" name="username"><br>';
             echo '<input type="submit" value="issue" name="issue"><br>';
             echo '</form>';
             
-        
-
-
-
-
-        /*
-        echo 'submit the new values below<br>';
-        echo '<form action="edit_db.php" method="post"><br>';
-        echo 'title: <input type="text" name="title"><br>';
-        echo 'author: <input type="text" name="author"><br>';
-        echo 'category: <input type="text" name="category"><br>';
-        echo 'isbn: <input type="text" name="isbn"><br>';
-        echo '<input type="submit" value="edit" name="edit"><br>';
-        echo '</form>';
-        //for delete
-        echo 'or delete this book<br>';
-
-        echo("<form action='edit_db.php' method='post' ><input type='submit'  value='delete' name='delete'></form>");             
-        */
-     }
+        }
 
 
   }
