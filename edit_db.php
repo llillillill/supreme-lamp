@@ -15,9 +15,43 @@
         unset($_POST['restore']);
         $_SESSION['retore_success']="restored!";
     }
+    //for editing
     else if(isset($_POST['edit'])){
+        echo "aise?<br>";
+        $title=$_POST['title'];
+        $author=$_POST['author'];
+        $category=$_POST['category'];
+        $isbn=$_POST['isbn'];
+
+        $sql="SELECT title,author,category,isbn FROM book WHERE b_id='$b_id'";
+        $result=$conn->query($sql);
+        $row=$result->fetch_assoc();
+
+        //this was done is order to prevent creating combination of queries
+        if(empty($title)) {
+            $title=$row['title'];
+        }
+
+        if(empty($author)) {
+            $author=$row['author'];
+        }
+
+        if(empty($category)){
+            $category=$row['$category'];
+        }
+
+        if(empty($isbn)) {
+            $isbn=$row['isbn'];
+        }
+
+        $sql="UPDATE book SET title = '$title', author = '$author', isbn = '$isbn', category = '$category' WHERE book.b_id = '$b_id'";
+        $conn->query($sql);
+
+        $_SESSION['edit_success']="edited";
         
+
     }
+    //for deleting
     else if(isset($_POST['delete'])){
         $sql="UPDATE book SET is_deleted = '1' WHERE book.b_id = '$b_id' ";
         $conn->query($sql);
