@@ -27,11 +27,23 @@
 
         $row=$result->fetch_assoc();
 
+
         if($_SESSION['u_id']==$row['u_id']){
             die("you want to issue the book to yourself?! go back and submit again");
         }
 
+        $b_id=$_SESSION['b_id'];
+        echo $b_id."<br>";
+        $issuer=$_SESSION['u_id'];
+        echo $issuer."<br>";
+        $borrower=$row['u_id'];
+        echo $borrower."<br>";
         //oke now update the issue table
+        $sql="INSERT INTO issue (b_id, issuer, borrower) VALUES ('$b_id', '$issuer', '$borrower')"; 
+        $conn->query($sql);
+        $_SESSION['issue_success']="issued!<br>";
+        unset($_SESSION['b_id']);
+        echo "<script> location.href='issueReturn.php'; </script>"; 
 
         
     }

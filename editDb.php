@@ -48,6 +48,7 @@
         //then check if the book has been deleted
         $row=$result->fetch_assoc();
         //here the result will be printed
+        echo "book id: ".$b_id."<br>";
         echo "title: ".$row['title']."<br>";
         echo "author: ".$row['author']."<br>";
         echo "category: ".$row['category']."<br>";

@@ -14,13 +14,9 @@
         echo $_SESSION['return_success'];
         unset($_SESSION['return_success']);
     }
-    if(!empty($_SESSION['delete_success'])){
-        echo $_SESSION['delete_success'];
-        unset($_SESSION['delete_success']);
-    }
-    if(!empty($_SESSION['edit_success'])){
-        echo $_SESSION['edit_success'];
-        unset ($_SESSION['edit_success']);
+    if(!empty($_SESSION['issue_success'])){
+        echo $_SESSION['issue_success'];
+        unset($_SESSION['issue_success']);
     }
 ?>
 <form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>' method="POST">
@@ -49,6 +45,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 
     $row=$result->fetch_assoc();
     //here the result will be printed
+    echo "book id: ".$b_id."<br>";
     echo "title: ".$row['title']."<br>";
     echo "author: ".$row['author']."<br>";
     echo "category: ".$row['category']."<br>";
