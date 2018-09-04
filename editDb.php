@@ -1,8 +1,9 @@
 <html>
 <body>
 
-<h3> edit the info of an existing book</h3>
 <a href="userHome.php"> your library </a>
+
+<h3> edit the info of an existing book</h3>
 <?php 
     //in order to prevent confirm form resubmission
     header("Cache-Control: no cache");
