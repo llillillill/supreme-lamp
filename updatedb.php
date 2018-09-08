@@ -15,4 +15,14 @@ Category: <input type="text" name="category">
 <input type="submit" value="update">
 </form>
 
-<!-- then redirect to userHome.php>
+<?php
+//inorder to pass messages 
+	//login_info wrong
+	if(!empty($_SESSION['empty_book_info']))
+	{
+		//sadat, here will be html formatting
+		echo $_SESSION['empty_book_info'];
+		unset($_SESSION['empty_book_info']);
+    }
+    
+ ?>
