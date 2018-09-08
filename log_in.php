@@ -8,14 +8,14 @@
         //check if empty
         if(empty($username)||empty($password)){
             $_SESSION['empty_info']="submit the form with data";
-            echo "<script> location.href='index.php'; </script>"; 
+            echo "<script> location.href='index.php'; </script>";
             exit;
         }
 
         else {
-        
+
         //create connection with db
-        $conn=new mysqli('localhost','newuser','password','library');
+        $conn=new mysqli('192.168.1.6:3306','root','password','library');
         //check connection
         if ($conn->connect_error) die("connection failed ".$conn->connect_error);
 
@@ -24,10 +24,10 @@
         $sql="SELECT l_id FROM login WHERE username='$username'";
         $result=$conn->query($sql);
         $row=$result->fetch_assoc();
-    
+
         if($result->num_rows==0) {
            $_SESSION['wrong_login_info']="wrong username / password"."<br>"."login failed";
-              echo "<script> location.href='index.php'; </script>"; 
+              echo "<script> location.href='index.php'; </script>";
               exit;
         }
         //now password
@@ -41,14 +41,14 @@
                 $result=$conn->query($sql);
                 $u_id=$result->fetch_assoc();
                 $_SESSION["u_id"]=$u_id['u_id'];
-	         echo "<script> location.href='home.php'; </script>"; 
+	         echo "<script> location.href='home.php'; </script>";
             //then the list will start here
             }
         else $_SESSION['wrong_login_info']="wrong username / password"."<br>"."login failed";
-        echo "<script> location.href='index.php'; </script>"; 
+        echo "<script> location.href='index.php'; </script>";
         exit;
     }
     }
-             
-    
+
+
  ?>

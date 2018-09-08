@@ -24,13 +24,31 @@
   <form class="w3-container w3-card-4" style = "padding-bottom: 20px" method="post" action="log_in.php">
     <h2>Log in</h2>
     <div class="w3-section">
-      <input class="w3-input" type="text" name="userName" required>
+      <input class="w3-input" type="text" required>
       <label>Username</label>
     </div>
     <div class="w3-section">
-      <input class="w3-input" type="password" name="password" required>
+      <input class="w3-input" type="password" required>
       <label>Password</label>
     </div>
+
+    <?php
+    //inorder to pass messages
+    	//login_info wrong
+    	if(!empty($_SESSION['wrong_login_info']))
+    	{
+    		//sadat, here will be html formatting
+        $msg = $_SESSION['wrong_login_info'];
+        echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div>";
+    		unset($_SESSION['wrong_login_info']);
+    	}
+    	//empty info
+    	else if(!empty($_SESSION['empty_info'])){
+    		$msg =  $_SESSION['empty_info'];
+        echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div>";
+    		unset($_SESSION['empty_info']);
+    	}
+     ?>
 
      <input type="submit" class="w3-button w3-black" value="Submit">
   </form>
