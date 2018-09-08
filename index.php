@@ -21,6 +21,17 @@
     </div>
   </header>
 
+   <?php
+    //inorder to pass messages
+    	//login_info wrong
+    	if(!empty($_SESSION['login_success']))
+    	{
+        $msg = $_SESSION['login_success'];
+        echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div><br>";
+    		unset($_SESSION['login_success']);
+    	}
+     ?>
+     
   <form class="w3-container w3-card-4" style = "padding-bottom: 20px" method="post" action="log_in.php">
     <h2>Log in</h2>
     <div class="w3-section">
