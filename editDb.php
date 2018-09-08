@@ -1,34 +1,58 @@
 <html>
+<head>
+  <title>Library de-central </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+</head>
 <body>
 
-<a href="userHome.php"> your library </a>
+
+  <header class="w3-container w3-theme w3-padding" id="myHeader">
+    <div class="w3-center">
+    <h4>LIBRARY WITHOUT SOMETHING</h4>
+    <h1 class="w3-xxxlarge w3-animate-bottom">Library De-Central</h1>
+      <div class="w3-padding-32">
+        <a href="userHome.php" class="w3-btn w3-xlarge w3-dark-grey w3-hover-light-grey" onclick="document.getElementById('id01').style.display='block'" style="font-weight:900;">Your Library</a>
+      </div>
+    </div>
+  </header>
 
 <h3> edit the info of an existing book</h3>
-<?php 
-    //in order to prevent confirm form resubmission
-    header("Cache-Control: no cache");
-    session_cache_limiter("private_no_expire");
-    session_start();
-    //messages upon completion
-    if(!empty($_SESSION['restore_sucess']))
-    {
-        echo $_SESSION['restore_success'];
-        unset($_SESSION['restore_success']);
-    }
-    if(!empty($_SESSION['delete_success'])){
-        echo $_SESSION['delete_success'];
-        unset($_SESSION['delete_success']);
-    }
-    if(!empty($_SESSION['edit_success'])){
-        echo $_SESSION['edit_success'];
-        unset ($_SESSION['edit_success']);
-    }
-?>
-<form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>' method="POST">
-    book id:<input type="text" name="b_id"><br>
-    <input type="submit" value="look up">
-    </form>
 
+<?php
+        session_start();
+    	if(!empty($_SESSION['restore_sucess']))
+    	{
+        $msg = $_SESSION['restore_success'];
+        echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div><br>";
+    		unset($_SESSION['restore_success']);
+    	}
+    	//empty info
+    	else if(!empty($_SESSION['delete_success'])){
+    		$msg =  $_SESSION['delete_success'];
+        echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div><br>";
+    		unset($_SESSION['delete_success']);
+        }
+        else if(!empty($_SESSION['edit_success'])){
+    		$msg =  $_SESSION['edit_success'];
+        echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div><br>";
+    		unset($_SESSION['edit_success']);
+        }
+
+?>
+    
+
+<h2>Provide the book id to get info about the book</h2>
+<div class="w3-half">
+<form class="w3-container w3-card-4" action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>' method="POST">
+  <div class="w3-section">      
+    Book id: <input class="w3-input" type="text" name="b_id" required><input type="submit" class="w3-button w3-black" value="look up">
+
+</div>
+    </form>
 <?php
 
     if($_SERVER['REQUEST_METHOD']=='POST'){
@@ -36,7 +60,7 @@
         //$u_id for checking if the book belongs to current user
         $u_id=$_SESSION['u_id'];
         //set connection and run query
-        $conn= new mysqli("localhost", "newuser","password", "library");
+        $conn= new mysqli("localhost", "root","amarsql", "library");
         if($conn->connect_error) die("connection to db failed");
     
         $sql="SELECT title,author,isbn,category,entry_time,is_deleted FROM book WHERE b_id='$b_id' AND u_id='$u_id'";
@@ -48,12 +72,18 @@
         //then check if the book has been deleted
         $row=$result->fetch_assoc();
         //here the result will be printed
-        echo "book id: ".$b_id."<br>";
-        echo "title: ".$row['title']."<br>";
-        echo "author: ".$row['author']."<br>";
-        echo "category: ".$row['category']."<br>";
-        echo "isbn: ".$row['isbn']."<br>";
-        echo "entry time: ".$row['entry_time']."<br>";
+        echo "<div class=\"w3-half\">";
+        echo '<div class="w3-card-4 w3-container">';
+        echo "<ul class=\"w3-ul w3-border w3-hoverable\">";
+        echo "<li class=\"w3-theme\">Book id: ".$b_id."<br>";
+        echo "title: <li>".$row['title']."</li>";
+        echo "author: <li>".$row['author']."</li>";
+        echo "category: <li>".$row['category']."</li>";
+        echo "isbn: <li>".$row['isbn']."</li>";
+        echo "entry time: <li>".$row['entry_time']."</li>";
+        echo "</ul>";
+        echo "</div>";
+        echo "</div>";
             
         //session variable to pass b_id in edit_db.php
         $_SESSION['b_id']=$b_id;
@@ -63,24 +93,32 @@
             echo "restore the book?<br>";
             //now restoring the books
             //logout needs to be added
-            echo("<form action='edit_db.php' method='post' ><input type='submit'  value='restore' name='restore'></form>");             
+            echo("<form class=\"w3-container w3-card-4\" style = \"padding-bottom: 20px\" action='edit_db.php' method='post' ><input type='submit'  value='restore' name='restore'></form>");             
            
         }
         else {
-            //for edit
-            echo 'submit the new values below<br>';
-            echo '<form action="edit_db.php" method="post"><br>';
-            echo 'title: <input type="text" name="title"><br>';
-            echo 'author: <input type="text" name="author"><br>';
-            echo 'category: <input type="text" name="category"><br>';
-            echo 'isbn: <input type="text" name="isbn"><br>';
-            echo '<input type="submit" value="edit" name="edit"><br>';
-            echo '</form>';
-            //for delete
-            echo 'or delete this book<br>';
-            echo("<form action='edit_db.php' method='post' ><input type='submit'  value='delete' name='delete'></form>");             
+           echo "<form class=\"w3-container w3-card-4\" style = \"padding-bottom: 20px\" method=\"post\" action=\"edit_db.php\">";
+           echo "<h2>put values to edit</h2>";
+           echo "<div class=\"w3-section\">";
+           echo "<label>Title</label> <input class=\"w3-input\" type=\"text\" name=\"title\" >";
+           echo "</div>";
+           echo "<div class=\"w3-section\">";
+           echo "<label>Author</label> <input class=\"w3-input\" type=\"text\" name=\"author\" >";
+           echo "</div>";
+           echo "<div class=\"w3-section\">";
+           echo '<label>Category</label> <input class="w3-input" type="text" name="category" required>';
+           echo '</div>';
+           echo '<div class="w3-section">';
+           echo '<label>isbn</label> <input class="w3-input" type="text" name="isbn">';
+           echo '</div>';
+           echo '<input type="submit" class="w3-button w3-black" value="Edit">';
+           echo '</form>';
+        
+           echo 'or delete this book<br>';
+           echo("<form class=\"w3-container w3-card-4\" style = \"padding-bottom: 20px\" action='edit_db.php' method='post' ><input type='submit' class='w3-button w3-black'  value='delete' name='delete'></form>");             
 
 
+        
         }
 
 

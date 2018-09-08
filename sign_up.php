@@ -1,7 +1,7 @@
 <?php
     session_start();
  //establish connection
-	 $conn= new mysqli("localhost", "newuser","password", "library");
+	 $conn= new mysqli("localhost", "root","amarsql", "library");
 	if($conn->connect_error) die("connection to db failed");
 
 	if($_SERVER['REQUEST_METHOD']=='POST'){
@@ -45,6 +45,8 @@
 			$sql="INSERT INTO login (u_id,username,password) VALUES ('$row[u_id]','$username','$hashed_password')";
 			
 			$conn->query($sql);
+
+			$_SESSION['login_success']="signup successful! now log in.";
 
            //now redirect to login page 
 			 echo "<script> location.href='index.php'; </script>";

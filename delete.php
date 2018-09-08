@@ -1,7 +1,7 @@
 <?php 
     session_start();
     
-    $conn= new mysqli("localhost", "newuser","password", "library");
+    $conn= new mysqli("localhost", "root","amarsql", "library");
     if($conn->connect_error) die("connection to db failed");
 
     echo "aise";

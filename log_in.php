@@ -15,7 +15,7 @@
         else {
 
         //create connection with db
-        $conn=new mysqli('192.168.1.6:3306','root','password','library');
+        $conn=new mysqli('localhost','root','amarsql','library');
         //check connection
         if ($conn->connect_error) die("connection failed ".$conn->connect_error);
 
