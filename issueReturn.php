@@ -1,27 +1,46 @@
 <html>
+<head>
+  <title>Library de-central </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+</head>
 <body>
-
-<?php session_start() ?>
-<a href="userHome.php"> your library </a>
-<?php 
-   // in order to prevent confirm form resubmission
-    header("Cache-Control: no cache");
-    session_cache_limiter("private_no_expire");
-    session_start();
-    //messages upon completion
-    if(!empty($_SESSION['return_success']))
-    {
-        echo $_SESSION['return_success'];
-        unset($_SESSION['return_success']);
-    }
-    if(!empty($_SESSION['issue_success'])){
-        echo $_SESSION['issue_success'];
-        unset($_SESSION['issue_success']);
-    }
+<header class="w3-container w3-theme w3-padding" id="myHeader">
+    <div class="w3-center">
+    <h4>LIBRARY WITHOUT SOMETHING</h4>
+    <h1 class="w3-xxxlarge w3-animate-bottom">Library De-Central</h1>
+      <div class="w3-padding-32">
+        <a href="userHome.php" class="w3-btn w3-xlarge w3-dark-grey w3-hover-light-grey" onclick="document.getElementById('id01').style.display='block'" style="font-weight:900;">Your Library</a>
+      </div>
+    </div>
+</header>
+<?php session_start() 
+//page reload problem
 ?>
-<form action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>' method="POST">
-    book id:<input type="text" name="b_id"><br>
-    <input type="submit" value="look up">
+<?php
+    //inorder to pass messages
+    	if(!empty($_SESSION['return_success'])){
+        $msg = $_SESSION['return_success'];
+        echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div><br>";
+    		unset($_SESSION['return_success']);
+    	}
+    	else if(!empty($_SESSION['issue_success'])){
+    		$msg =  $_SESSION['issue_success'];
+        echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div><br>";
+    		unset($_SESSION['issue_success']);
+    	}
+?>
+
+<h2>Provide the book id to get info about the book</h2>
+<div class="w3-half">
+<form class="w3-container w3-card-4" action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>' method="POST">
+  <div class="w3-section">      
+    Book id: <input class="w3-input" type="text" name="b_id" required><input type="submit" class="w3-button w3-black" value="look up">
+
+</div>
     </form>
 
 <?php
@@ -32,9 +51,8 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     if(empty($b_id)) die("enter the book id<br>");
     //$u_id for checking if the book belongs to current user
     $u_id=$_SESSION['u_id'];
-    echo $u_id."<br>";
     //set connection and run query
-    $conn= new mysqli("localhost", "newuser","password", "library");
+    $conn = new mysqli("localhost", "root","amarsql", "library");
     if($conn->connect_error) die("connection to db failed");
 
     $sql="SELECT title,author,isbn,category,entry_time,is_deleted FROM book WHERE b_id='$b_id' AND u_id='$u_id'";
@@ -44,13 +62,21 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     if($result->num_rows==0) die("the book does not exist or maybe the book is not yours");
 
     $row=$result->fetch_assoc();
-    //here the result will be printed
-    echo "book id: ".$b_id."<br>";
-    echo "title: ".$row['title']."<br>";
-    echo "author: ".$row['author']."<br>";
-    echo "category: ".$row['category']."<br>";
-    echo "isbn: ".$row['isbn']."<br>";
-    echo "entry time: ".$row['entry_time']."<br>";
+    //here the result will be printed  
+        
+        echo "<div class=\"w3-half\">";
+        echo '<div class="w3-card-4 w3-container">';
+        echo "<ul class=\"w3-ul w3-border w3-hoverable\">";
+        echo "<li class=\"w3-theme\">Book id: ".$b_id."<br>";
+        echo "title: <li>".$row['title']."</li>";
+        echo "author: <li>".$row['author']."</li>";
+        echo "category: <li>".$row['category']."</li>";
+        echo "isbn: <li>".$row['isbn']."</li>";
+        echo "entry time: <li>".$row['entry_time']."</li>";
+        echo "</ul>";
+        echo "</div>";
+        echo "</div>";
+        echo '<br>';
         
     //session variable to pass b_id in issue_return.php
     $_SESSION['b_id']=$b_id;
@@ -81,17 +107,19 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
         
             //get i_id for return_info 
             $_SESSION['i_id']=$row['i_id'];
-            echo("<form action='issue_return.php' method='post' ><input type='submit'  value='returned' name='return'></form>");
+            echo("<form class=\"w3-container w3-card-4\" style = \"padding-bottom: 20px\" action='issue_return.php' method='post' ><input type='submit'  value='ruturned' class='w3-button w3-black' name='return'></form>");             
+
         }
 
 
         //or available for issuing
         else {
             echo "the book is available for issuing<br>";
-            echo "enter the name of the user: <br>";
-            echo '<form action="issue_return.php" method="post">';
-            echo 'username: <input type="text" name="username"><br>';
-            echo '<input type="submit" value="issue" name="issue"><br>';
+            echo '<form class="w3-container w3-card-4" action="issue_return.php" method="POST">';
+            echo '<div class="w3-section">';
+            echo 'Username: <input class="w3-input" type="text" name="username" required>';
+            echo '<input type="submit" class="w3-button w3-black" value="issue" name="issue">';
+            echo '</div>';
             echo '</form>';
             
         }

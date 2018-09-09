@@ -1,7 +1,7 @@
 <?php 
     session_start();
 
-    $conn= new mysqli("localhost", "newuser","password", "library");
+    $conn= new mysqli("localhost", "root","amarsql", "library");
     if($conn->connect_error) die("connection to db failed");
 
     $b_id=$_SESSION['b_id'];
@@ -57,7 +57,7 @@
         $conn->query($sql);
         unset($_SESSION[$b_id]);
         unset($_POST['delete']);
-        $_SESSION['delete_success']="delted!";
+        $_SESSION['delete_success']="deleted!";
     }
 
     echo "<script> location.href='editDb.php'; </script>"; 

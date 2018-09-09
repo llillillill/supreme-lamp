@@ -1,7 +1,7 @@
 <?php 
     session_start();
 
-    $conn= new mysqli("localhost", "newuser","password", "library");
+    $conn= new mysqli("localhost", "root","amarsql", "library");
     if($conn->connect_error) die("connection to db failed");
 
 
@@ -14,6 +14,7 @@
         unset($_POST['return']);
         $_SESSION['return_success']="returned!";
         echo "<script> location.href='issueReturn.php'; </script>"; 
+        exit;
 
     }
     if(isset($_POST['issue'])){
@@ -33,17 +34,15 @@
         }
 
         $b_id=$_SESSION['b_id'];
-        echo $b_id."<br>";
         $issuer=$_SESSION['u_id'];
-        echo $issuer."<br>";
         $borrower=$row['u_id'];
-        echo $borrower."<br>";
         //oke now update the issue table
         $sql="INSERT INTO issue (b_id, issuer, borrower) VALUES ('$b_id', '$issuer', '$borrower')"; 
         $conn->query($sql);
         $_SESSION['issue_success']="issued!<br>";
         unset($_SESSION['b_id']);
         echo "<script> location.href='issueReturn.php'; </script>"; 
+        exit;
 
         
     }

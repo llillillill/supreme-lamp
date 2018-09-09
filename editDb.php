@@ -84,6 +84,7 @@
         echo "</ul>";
         echo "</div>";
         echo "</div>";
+        echo '<br>';
             
         //session variable to pass b_id in edit_db.php
         $_SESSION['b_id']=$b_id;
