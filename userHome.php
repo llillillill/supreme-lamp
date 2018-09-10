@@ -9,29 +9,31 @@
 </head>
 <body>
 
+  <header class="w3-container w3-theme w3-padding" id="myHeader">
+    <div class="w3-center">
+    <h4>LIBRARY WITHOUT SOMETHING</h4>
+    <h1 class="w3-xxxlarge w3-animate-bottom">Library De-Central</h1>
+      <div class="w3-padding-32">
+        <a href="home.php" class="w3-btn w3-xlarge w3-dark-grey w3-hover-light-grey" onclick="document.getElementById('id01').style.display='block'" style="font-weight:900;">Home Page</a>
+      </div>
+    </div>
+  </header>
+
 <?php session_start() ?>
-
-<h1> your library </h1>
-
-<!-- user's issues and returns-->
-<!-- options are update db, issue, return, edit db-->
-<!-- user will be shown the number of books, the number of times he issed and returned -->
-
-<!-- update db is unfinished and needs testing -->
-<h3> <a href="updateDb.php"> update db </a></h3>
-<h3> <a href="editDb.php"> edit db </a></h3>
-<!-- there will be a delete option in edit db -->
-<h3> <a href="issueReturn.php"> issue_return </a>></h3>
-<h3> <a href="edit_user.php"> edit your info </a> </h3>
-<!-- Footer -->
+<div class="w3-container">
+    
+    <div class="w3-bar w3-theme">
+      <a href="updateDb.php" class="w3-bar-item w3-button w3-padding-16">Update Database</a>
+      <a href="editDb.php" class="w3-bar-item w3-button w3-padding-16">Edit or delete</a>
+      <a href="issueReturn.php" class="w3-bar-item w3-button w3-padding-16">Issue or Return</a>
+</div>
 
 <?php 
-    echo "books available for issuing <br>";
     $conn = new mysqli("localhost","root","amarsql","library");
     //user id for the query
     $u_id=$_SESSION['u_id'];
 
-    $sql="SELECT b_id,title,author,category,entry_time FROM book WHERE u_id='$u_id' AND is_deleted='0' AND is_issued='0'";
+    $sql="SELECT b_id,title,author,category,entry_time FROM book WHERE u_id='$u_id' AND is_deleted='0' AND is_issued='0' order by entry_time desc";
     $result=$conn->query($sql);
     //html code goes here for table
     echo '<div class="w3-container">';
@@ -66,13 +68,83 @@
     echo '</table>';
     echo '</div>';
 
+    //ends here
 
 
+    $sql="SELECT book.b_id, book.title, book.author, user.username FROM book,user WHERE book.u_id='$u_id' and book.is_issued='1' and book.is_deleted='0' and book.last_issue=user.u_id";
+    $result=$conn->query($sql);
 
-    echo "issued book<br>";
+    //html starts here
+    echo '<div class="w3-container">';
+    echo '<hr>';
+    echo '<div class="w3-center">';
+    echo '<h2>Issued books</h2>';
+    echo '</div>';
+    echo '<div class="w3-responsive w3-card-4">';
+    echo '<table class="w3-table w3-striped w3-bordered">';
+    echo '<thead>';
+    echo '<tr class="w3-theme">';
+    echo '<th>Book Id</th>';
+    echo '<th>Title</th>';
+    echo '<th>Author</th>';
+    echo '<th>Username</th>';
+    echo '</tr>';
+    echo '</thead>';
+    echo '<tbody>';
+
+    while($row=$result->fetch_assoc()){
+    echo '<tr class="w3-white">';
+    echo '<td>'.$row["b_id"].'</td>';
+    echo '<td>'.$row["title"].'</td>';
+    echo '<td>'.$row["author"].'</td>';
+    echo '<td>'.$row["username"].'</td>';
+    echo '</tr>';
+    }
+
+    echo '</tbody>';
+    echo '</table>';
+    echo '</div>';
+
+    
 
 
     echo "recent returns<br>";
+    $sql="SELECT book.b_id, book.title, book.author, user.username FROM book,user WHERE book.u_id='$u_id' and book.is_issued='0' and book.is_deleted='0' and book.last_issue=user.u_id";
+    $result=$conn->query($sql);
+
+    //html starts here
+    echo '<div class="w3-container">';
+    echo '<hr>';
+    echo '<div class="w3-center">';
+    echo '<h2>Recent returns</h2>';
+    echo '</div>';
+    echo '<div class="w3-responsive w3-card-4">';
+    echo '<table class="w3-table w3-striped w3-bordered">';
+    echo '<thead>';
+    echo '<tr class="w3-theme">';
+    echo '<th>Book Id</th>';
+    echo '<th>Title</th>';
+    echo '<th>Author</th>';
+    echo '<th>Username</th>';
+    echo '</tr>';
+    echo '</thead>';
+    echo '<tbody>';
+
+    while($row=$result->fetch_assoc()){
+    echo '<tr class="w3-white">';
+    echo '<td>'.$row["b_id"].'</td>';
+    echo '<td>'.$row["title"].'</td>';
+    echo '<td>'.$row["author"].'</td>';
+    echo '<td>'.$row["username"].'</td>';
+    echo '</tr>';
+    }
+
+    echo '</tbody>';
+    echo '</table>';
+    echo '</div>';
+
+    
+
 
 
 ?>

@@ -14,6 +14,7 @@
         $b_id=$_SESSION['b_id'];
         $sql="UPDATE `book` SET `is_issued` = '0' WHERE `book`.`b_id` = '$b_id'; ";
         $conn->query($sql);
+    
         unset($_SESSION['b_id']);
         unset($_POST['return']);
         $_SESSION['return_success']="returned!";
@@ -44,6 +45,8 @@
         $sql="INSERT INTO issue (b_id, issuer, borrower) VALUES ('$b_id', '$issuer', '$borrower')"; 
         $conn->query($sql);
         $sql="UPDATE `book` SET `is_issued` = '1' WHERE `book`.`b_id` = '$b_id'; ";
+        $conn->query($sql);
+        $sql="UPDATE book set last_issue='$borrower' WHERE book.b_id='$b_id'";
         $conn->query($sql);
         $_SESSION['issue_success']="issued!<br>";
         unset($_SESSION['b_id']);
