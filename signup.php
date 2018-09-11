@@ -9,7 +9,10 @@
 </head>
 
 <body>
-<?php session_start() ?>
+<?php session_start();
+
+
+ ?>
 
 
   <header class="w3-container w3-theme w3-padding" id="myHeader">

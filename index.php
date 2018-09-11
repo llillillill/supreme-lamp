@@ -9,7 +9,12 @@
 </head>
 
 <body>
-  <?php session_start() ?>
+  <?php session_start(); 
+    if(isset($_SESSION['u_id'])){
+      header("Location: home.php");
+      exit;
+    }
+  ?>
 
   <header class="w3-container w3-theme w3-padding" id="myHeader">
     <div class="w3-center">
@@ -29,6 +34,12 @@
         $msg = $_SESSION['login_success'];
         echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div><br>";
     		unset($_SESSION['login_success']);
+      }
+      if(!empty($_SESSION['log_in_first']))
+    	{
+        $msg = $_SESSION['log_in_first'];
+        echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div><br>";
+    		unset($_SESSION['log_in_first']);
     	}
      ?>
 

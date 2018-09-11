@@ -20,15 +20,21 @@
     </div>
   </header>
 
-<?php session_start()?>
-<h1> update the db </h1>
+<?php session_start();
 
-<h3> please give info the way it is written on the book</h3>
+if(!isset($_SESSION['u_id'])){
+  $_SESSION['log_in_first']="Log in to view this page";
+  header("Location: index.php");
+  exit;
+}
+?>
+
 
 
 
   <form class="w3-container w3-card-4" style = "padding-bottom: 20px" method="post" action="update_db.php">
     <h2>Update your database</h2>
+    <h4>Consider giving information exactly the way it is written on the book</h4>
     <div class="w3-section">
       <input class="w3-input" type="text" name="title" required>
       <label>Title</label>

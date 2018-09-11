@@ -17,7 +17,13 @@
       </div>
     </div>
 </header>
-<?php session_start() 
+<?php session_start();
+
+if(!isset($_SESSION['u_id'])){
+    $_SESSION['log_in_first']="Log in to view this page";
+    header("Location: index.php");
+    exit;
+  }
 //page reload problem
 ?>
 <?php
@@ -35,6 +41,7 @@
 ?>
 
 <h2>Provide the book id to get info about the book</h2>
+<h4> Then issue another user providing username<h4>
 <div class="w3-half">
 <form class="w3-container w3-card-4" action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>' method="POST">
   <div class="w3-section">      

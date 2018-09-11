@@ -1,3 +1,4 @@
+
 <html>
 <head>
   <title>Library de-central </title>
@@ -15,18 +16,30 @@
     <h1 class="w3-xxxlarge w3-animate-bottom">Library De-Central</h1>
       <div class="w3-padding-32">
         <a href="home.php" class="w3-btn w3-xlarge w3-dark-grey w3-hover-light-grey" onclick="document.getElementById('id01').style.display='block'" style="font-weight:900;">Home Page</a>
-      </div>
-    </div>
-  </header>
-
-<?php session_start() ?>
-<div class="w3-container">
-    
-    <div class="w3-bar w3-theme">
+      </div>  <div class="w3-bar w3-theme">
       <a href="updateDb.php" class="w3-bar-item w3-button w3-padding-16">Update Database</a>
       <a href="editDb.php" class="w3-bar-item w3-button w3-padding-16">Edit or delete</a>
       <a href="issueReturn.php" class="w3-bar-item w3-button w3-padding-16">Issue or Return</a>
+      <a href="log_out.php" class="w3-bar-item w3-button w3-padding-16">Log out</a>
+
+
 </div>
+    </div>
+  
+  </header>
+
+<?php session_start();
+ 
+if(!isset($_SESSION['u_id'])){
+  $_SESSION['log_in_first']="Log in to view this page";
+  header("Location: index.php");
+  exit;
+} 
+  
+ ?>
+<div class="w3-container">
+    
+ 
 
 <?php 
     $conn = new mysqli("localhost","root","amarsql","library");
