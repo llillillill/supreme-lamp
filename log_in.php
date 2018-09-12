@@ -4,21 +4,14 @@
     if($_SERVER["REQUEST_METHOD"]=="POST" ){
         //collect name and Password
 
-        $username=$_REQUEST["userName"];
-        $password=$_REQUEST["password"];
-        //check if empty
-        if(empty($username)||empty($password)){
-            $_SESSION['empty_info']="submit the form with data";
-            echo "<script> location.href='index.php'; </script>";
-            exit;
-        }
-
-        else {
-
-        //create connection with db
+             //create connection with db
         $conn=new mysqli('localhost','root','amarsql','library');
         //check connection
         if ($conn->connect_error) die("connection failed ".$conn->connect_error);
+
+
+        $username=mysqli_real_escape_string($conn, $_POST["userName"]);
+        $password=mysqli_real_escape_string($conn, $_POST["password"]);
 
         //sql for validating
         //first checking if the user name exists
@@ -49,7 +42,7 @@
         echo "<script> location.href='index.php'; </script>";
         exit;
     }
-    }
+  
 
 
  ?>

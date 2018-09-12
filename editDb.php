@@ -62,12 +62,14 @@ if(!isset($_SESSION['u_id'])){
 <?php
 
     if($_SERVER['REQUEST_METHOD']=='POST'){
-        $b_id=$_REQUEST["b_id"];
         //$u_id for checking if the book belongs to current user
         $u_id=$_SESSION['u_id'];
         //set connection and run query
         $conn= new mysqli("localhost", "root","amarsql", "library");
         if($conn->connect_error) die("connection to db failed");
+
+        $b_id=mysqli_real_escape_string($conn, $_POST["b_id"]);
+
     
         $sql="SELECT title,author,isbn,category,entry_time,is_deleted FROM book WHERE b_id='$b_id' AND u_id='$u_id'";
         $result=$conn->query($sql);

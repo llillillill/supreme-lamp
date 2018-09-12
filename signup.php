@@ -31,23 +31,27 @@
     <h2>Sign up</h2>
     <?php
     //inorder to pass messages
-    	//login_info wrong
     	if(!empty($_SESSION['same_username_error']))
     	{
-    		//sadat, here will be html formatting
         $msg = $_SESSION['same_username_error'];
         echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div><br>";
     		unset($_SESSION['same_username_error']);
     	}
-    	//empty info
     	else if(!empty($_SESSION['password_error'])){
     		$msg =  $_SESSION['password_error'];
         echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div><br>";
-    		unset($_SESSION['password_error']);
-    	}
+        unset($_SESSION['password_error']);
+      }
+      
+      else if(!empty($_SESSION['invalid_email'])){
+        $msg =  $_SESSION['invalid_email'];
+        echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div><br>";
+        unset($_SESSION['invalid_email']);
+      }
+    	
      ?>
     <div class="w3-section">
-      <input class="w3-input" type="text" name="username" required>
+      <input class="w3-input" type="text" name="userName" required>
       <label>Username</label>
     </div>
     <div class="w3-section">

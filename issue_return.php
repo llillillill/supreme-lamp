@@ -1,6 +1,12 @@
 <?php 
     session_start();
 
+if(!isset($_SESSION['u_id'])){
+    $_SESSION['log_in_first']="Log in to view this page";
+    header("Location: index.php");
+    exit;
+  }
+
     $conn= new mysqli("localhost", "root","amarsql", "library");
     if($conn->connect_error) die("connection to db failed");
 
@@ -23,14 +29,15 @@
 
     }
     if(isset($_POST['issue'])){
-        $username=$_POST['username'];
+        $username=mysqli_real_escape_string($conn, $_POST["username"]);
+
         $sql="SELECT u_id  FROM user WHERE username='$username'";
         //if there is no user in that name
         $result=$conn->query($sql);
         if($result->num_rows==0){
             die("username doesn't exist, go back and submit again");
         }
-
+        
         $row=$result->fetch_assoc();
 
 

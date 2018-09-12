@@ -10,10 +10,12 @@ if(!isset($_SESSION['u_id'])){
     if($conn->connect_error) die("connection to db failed");
 
     if($_SERVER['REQUEST_METHOD']=='POST'){
-        $title=$_REQUEST['title'];
-        $author=$_REQUEST['author'];
-        $isbn=$_REQUEST['isbn'];
-        $category=$_REQUEST['category'];
+        
+		$title=mysqli_real_escape_string($conn, $_POST["title"]);
+		$author=mysqli_real_escape_string($conn, $_POST["author"]);
+		$isbn=mysqli_real_escape_string($conn, $_POST["isbn"]);
+        $category=mysqli_real_escape_string($conn, $_POST["category"]);
+        
         //getting u_id of the current user to update book table
         $u_id=$_SESSION['u_id'];
         //check if empty

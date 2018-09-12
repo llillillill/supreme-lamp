@@ -1,6 +1,12 @@
 <?php 
     session_start();
 
+if(!isset($_SESSION['u_id'])){
+  $_SESSION['log_in_first']="Log in to view this page";
+  header("Location: index.php");
+  exit;
+}
+
     $conn= new mysqli("localhost", "root","amarsql", "library");
     if($conn->connect_error) die("connection to db failed");
 
@@ -22,6 +28,12 @@
         $author=$_POST['author'];
         $category=$_POST['category'];
         $isbn=$_POST['isbn'];
+
+
+        $title=mysqli_real_escape_string($conn, $_POST["title"]);
+        $author=mysqli_real_escape_string($conn, $_POST["author"]);
+        $category=mysqli_real_escape_string($conn, $_POST["category"]);
+        $isbn=mysqli_real_escape_string($conn, $_POST["isbn"]);
 
         $sql="SELECT title,author,category,isbn FROM book WHERE b_id='$b_id'";
         $result=$conn->query($sql);
