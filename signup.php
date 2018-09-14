@@ -1,3 +1,10 @@
+<?php session_start(); 
+    if(isset($_SESSION['u_id'])){
+      header("Location: home.php");
+      exit;
+    }
+  ?>
+
 <html>
 <head>
   <title>Library de-central </title>
@@ -9,10 +16,6 @@
 </head>
 
 <body>
-<?php session_start();
-
-
- ?>
 
 
   <header class="w3-container w3-theme w3-padding" id="myHeader">

@@ -1,3 +1,10 @@
+<?php session_start();
+  if(!isset($_SESSION['u_id'])){
+    $_SESSION['log_in_first']="Log in to view this page";
+    header("Location: index.php");
+    exit;
+  }
+ ?>
 <html>
 <head>
   <title>Library de-central </title>
@@ -39,7 +46,7 @@
 
 
 <?php 
-    $conn = new mysqli("localhost","root","amarsql","library");
+    $conn= new mysqli('localhost','root','amarsql','library');
     //user id for the query
     $u_id=$_SESSION['u_id'];
 

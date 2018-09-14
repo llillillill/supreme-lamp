@@ -7,19 +7,18 @@ if(!isset($_SESSION['u_id'])){
   exit;
 }
 
-    $conn= new mysqli("localhost", "root","amarsql", "library");
+    $conn= new mysqli('localhost','root','amarsql','library');
     if($conn->connect_error) die("connection to db failed");
 
     $b_id=$_SESSION['b_id'];
 
-    echo "aise";
     //for restoration
     if(isset($_POST['restore'])){
         $sql="UPDATE book SET is_deleted = '0' WHERE book.b_id = '$b_id' ";
         $conn->query($sql);
         unset($_SESSION[$b_id]);
         unset($_POST['restore']);
-        $_SESSION['retore_success']="restored!";
+        $_SESSION['restore_success']="restored!";
     }
     //for editing
     else if(isset($_POST['edit'])){

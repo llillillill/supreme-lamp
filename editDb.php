@@ -1,3 +1,12 @@
+<?php
+     session_start();
+
+     if(!isset($_SESSION['u_id'])){
+     $_SESSION['log_in_first']="Log in to view this page";
+     header("Location: index.php");
+     exit;
+     }
+?>
 <html>
 <head>
   <title>Library de-central </title>
@@ -5,7 +14,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
 </head>
 <body>
 
@@ -22,14 +32,8 @@
 
 
 <?php
-        session_start();
-
-if(!isset($_SESSION['u_id'])){
-  $_SESSION['log_in_first']="Log in to view this page";
-  header("Location: index.php");
-  exit;
-}
-    	if(!empty($_SESSION['restore_sucess']))
+   
+    	if(!empty($_SESSION['restore_success']))
     	{
         $msg = $_SESSION['restore_success'];
         echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div><br>";
@@ -46,6 +50,7 @@ if(!isset($_SESSION['u_id'])){
         echo "<div class=\"w3-col w3-container m2 w3-blue-grey\"><p>".$msg."</p></div><br>";
     		unset($_SESSION['edit_success']);
         }
+        echo "<br>";
 
 ?>
     
@@ -65,7 +70,7 @@ if(!isset($_SESSION['u_id'])){
         //$u_id for checking if the book belongs to current user
         $u_id=$_SESSION['u_id'];
         //set connection and run query
-        $conn= new mysqli("localhost", "root","amarsql", "library");
+        $conn= new mysqli('localhost','root','amarsql','library');
         if($conn->connect_error) die("connection to db failed");
 
         $b_id=mysqli_real_escape_string($conn, $_POST["b_id"]);
@@ -80,18 +85,20 @@ if(!isset($_SESSION['u_id'])){
         //then check if the book has been deleted
         $row=$result->fetch_assoc();
         //here the result will be printed
-        echo "<div class=\"w3-half\">";
-        echo '<div class="w3-card-4 w3-container">';
-        echo "<ul class=\"w3-ul w3-border w3-hoverable\">";
-        echo "<li class=\"w3-theme\">Book id: ".$b_id."<br>";
-        echo "title: <li>".$row['title']."</li>";
-        echo "author: <li>".$row['author']."</li>";
-        echo "category: <li>".$row['category']."</li>";
-        echo "isbn: <li>".$row['isbn']."</li>";
-        echo "entry time: <li>".$row['entry_time']."</li>";
-        echo "</ul>";
-        echo "</div>";
-        echo "</div>";
+        echo '<div class="w3-half" style="padding-left: 10px; padding-top: 20px">
+            <div class="w3-card-4 w3-container">
+            <ul class="w3-ul w3-border w3-hoverable">
+                <li class="w3-theme">Book Info</li>
+                <li>Book id: '.$b_id.'<br>
+                <li>Book title: '.$row['title'].'<br>
+                <li>Book author: '.$row['author'].'<br>
+                <li>category: '.$row['category'].'<br>
+                <li>ISBN  No.: '.$row['isbn'].'<br>
+                <li>Entry time: '.$row['entry_time'].'<br>
+            </ul>
+            </div>
+        </div>
+        ';
         echo '<br>';
             
         //session variable to pass b_id in edit_db.php
@@ -102,30 +109,41 @@ if(!isset($_SESSION['u_id'])){
             echo "restore the book?<br>";
             //now restoring the books
             //logout needs to be added
-            echo("<form class=\"w3-container w3-card-4\" style = \"padding-bottom: 20px\" action='edit_db.php' method='post' ><input type='submit'  value='restore' name='restore'></form>");             
+            echo("<form class=\"w3-container w3-card-4\" style = \"padding-bottom: 20px\" action='edit_db.php' method='post' ><input type='submit'  value='restore' class='w3-button w3-black' name='restore'></form>");             
            
         }
         else {
-           echo "<form class=\"w3-container w3-card-4\" style = \"padding-bottom: 20px\" method=\"post\" action=\"edit_db.php\">";
-           echo "<h2>put values to edit</h2>";
-           echo "<div class=\"w3-section\">";
-           echo "<label>Title</label> <input class=\"w3-input\" type=\"text\" name=\"title\" >";
-           echo "</div>";
-           echo "<div class=\"w3-section\">";
-           echo "<label>Author</label> <input class=\"w3-input\" type=\"text\" name=\"author\" >";
-           echo "</div>";
-           echo "<div class=\"w3-section\">";
-           echo '<label>Category</label> <input class="w3-input" type="text" name="category" required>';
-           echo '</div>';
-           echo '<div class="w3-section">';
-           echo '<label>isbn</label> <input class="w3-input" type="text" name="isbn">';
-           echo '</div>';
-           echo '<input type="submit" class="w3-button w3-black" value="Edit">';
-           echo '</form>';
-        
-           echo 'or delete this book<br>';
-           echo("<form class=\"w3-container w3-card-4\" style = \"padding-bottom: 20px\" action='edit_db.php' method='post' ><input type='submit' class='w3-button w3-black'  value='delete' name='delete'></form>");             
 
+          echo'  
+          <div class="w3-half" style="padding-left: 10px; padding-bottom: 10px;">
+            <form class="w3-container w3-card-4" method="post" action="edit_db.php">
+                <ul class="w3-ul w3-border w3-hoverable">
+                    <li class="w3-theme">Put Values to Edit</li> 
+                  </ul>
+                          <div class="w3-section">
+              <label>Title</label> <input class="w3-input" type="text" name="title" >
+              </div>
+              <div class="w3-section">
+              <label>Author</label> <input class="w3-input" type="text" name="author" >
+              </div>
+              <div class="w3-section">
+              <label>Category</label> <input class="w3-input" type="text" name="category">
+              </div>
+              <div class="w3-section">
+              <label>isbn</label> <input class="w3-input" type="text" name="isbn">
+              </div>
+              <input type="submit" class="w3-button w3-black" value="Edit">
+              </form>
+          </div>         
+
+
+          
+       
+         ';
+
+         echo ' <div style="padding-left: 10px; padding-bottom: 10px;"> <i class="fas fa-exclamation-circle" style="color:red;"></i>
+           Or, Delete this book</div> ';
+         echo("<form class=\"w3-container w3-card-4\" style = \"padding-bottom: 20px\" action='edit_db.php' method='post' ><input type='submit' class='w3-button w3-black'  value='delete' name='delete'></form>");             
 
         
         }

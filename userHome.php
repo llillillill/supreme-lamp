@@ -1,4 +1,11 @@
-
+<?php session_start();
+ 
+if(!isset($_SESSION['u_id'])){
+  $_SESSION['log_in_first']="Log in to view this page";
+  header("Location: index.php");
+  exit;
+} 
+?>
 <html>
 <head>
   <title>Library de-central </title>
@@ -28,13 +35,7 @@
   
   </header>
 
-<?php session_start();
- 
-if(!isset($_SESSION['u_id'])){
-  $_SESSION['log_in_first']="Log in to view this page";
-  header("Location: index.php");
-  exit;
-} 
+
   
  ?>
 <div class="w3-container">
@@ -42,7 +43,7 @@ if(!isset($_SESSION['u_id'])){
  
 
 <?php 
-    $conn = new mysqli("localhost","root","amarsql","library");
+    $conn = new mysqli('localhost','root','amarsql','library');
     //user id for the query
     $u_id=$_SESSION['u_id'];
 
@@ -121,7 +122,6 @@ if(!isset($_SESSION['u_id'])){
     
 
 
-    echo "recent returns<br>";
     $sql="SELECT book.b_id, book.title, book.author, user.username FROM book,user WHERE book.u_id='$u_id' and book.is_issued='0' and book.is_deleted='0' and book.last_issue=user.u_id";
     $result=$conn->query($sql);
 

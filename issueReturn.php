@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="styles.css">
+  
 </head>
 <body>
 <header class="w3-container w3-theme w3-padding" id="myHeader">
@@ -40,11 +42,11 @@ if(!isset($_SESSION['u_id'])){
     	}
 ?>
 
-<h2>Provide the book id to get info about the book</h2>
-<h4> Then issue another user providing username<h4>
+<h2 style="padding-left: 10px">Provide the book id to get info about the book</h2>
+<h4 style="padding-left: 10px"> Then issue another user providing username<h4>
 <div class="w3-half">
 <form class="w3-container w3-card-4" action='<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>' method="POST">
-  <div class="w3-section">      
+  <div class="w3-section" style="padding-left: 10px">      
     Book id: <input class="w3-input" type="text" name="b_id" required><input type="submit" class="w3-button w3-black" value="look up">
 
 </div>
@@ -57,7 +59,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     //$u_id for checking if the book belongs to current user
     $u_id=$_SESSION['u_id'];
     //set connection and run query
-    $conn = new mysqli("localhost", "root","amarsql", "library");
+    $conn= new mysqli('localhost','root','amarsql','library');
     if($conn->connect_error) die("connection to db failed");
 
     $b_id=mysqli_real_escape_string($conn, $_POST["b_id"]);
@@ -72,19 +74,22 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
     $row=$result->fetch_assoc();
     //here the result will be printed  
         
-        echo "<div class=\"w3-half\">";
-        echo '<div class="w3-card-4 w3-container">';
-        echo "<ul class=\"w3-ul w3-border w3-hoverable\">";
-        echo "<li class=\"w3-theme\">Book id: ".$b_id."<br>";
-        echo "title: <li>".$row['title']."</li>";
-        echo "author: <li>".$row['author']."</li>";
-        echo "category: <li>".$row['category']."</li>";
-        echo "isbn: <li>".$row['isbn']."</li>";
-        echo "entry time: <li>".$row['entry_time']."</li>";
-        echo "</ul>";
-        echo "</div>";
-        echo "</div>";
-        echo '<br>';
+        echo '<div class="w3-half" style="padding-left: 10px">
+            <div class="w3-card-4 w3-container">
+            <ul class="w3-ul w3-border w3-hoverable">
+                <li class="w3-theme">Book Info</li>
+                <li>Id: '.$b_id.'<br>
+                <li>Title: '.$row['title'].'<br>
+                <li>Aauthor: '.$row['author'].'<br>
+                <li>Category: '.$row['category'].'<br>
+                <li>ISBN  No.: '.$row['isbn'].'<br>
+                <li>Entry time: '.$row['entry_time'].'<br>
+            </ul>
+            </div>
+        </div>
+        ';
+        
+
         
     //session variable to pass b_id in issue_return.php
     $_SESSION['b_id']=$b_id;
@@ -110,7 +115,6 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
             $result2=$conn->query($sql);
             $b=$result2->fetch_assoc();
 
-
             echo "the book is issued to ".$b['username']."<br>";
         
             //get i_id for return_info 
@@ -122,13 +126,13 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 
         //or available for issuing
         else {
-            echo "the book is available for issuing<br>";
-            echo '<form class="w3-container w3-card-4" action="issue_return.php" method="POST">';
-            echo '<div class="w3-section">';
-            echo 'Username: <input class="w3-input" type="text" name="username" required>';
-            echo '<input type="submit" class="w3-button w3-black" value="issue" name="issue">';
-            echo '</div>';
-            echo '</form>';
+            echo'<div style="float: left; padding: 10px;"> <div style="background-color: #607d8b;" >This book is available for issuing</div><br>
+            <form class="w3-container w3-card-4" action="issue_return.php" method="POST">
+            <div class="w3-section">
+            Username <input class="w3-input" type="text" name="username" required>
+            <input type="submit" class="w3-button w3-black" value="issue" name="issue">
+            </div>
+            </form></div>' ;          
             
         }
 
@@ -139,6 +143,9 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 
 
 ?>
+
+
+
 
 </body>
 </html>

@@ -7,7 +7,7 @@ if(!isset($_SESSION['u_id'])){
     exit;
   }
 
-    $conn= new mysqli("localhost", "root","amarsql", "library");
+    $conn= new mysqli('localhost','root','amarsql','library');
     if($conn->connect_error) die("connection to db failed");
 
 

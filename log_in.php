@@ -1,11 +1,17 @@
 <?php
     session_start();
+   
+    if(isset($_SESSION['u_id'])){
+      header("Location: home.php");
+      exit;
+    }
+
 
     if($_SERVER["REQUEST_METHOD"]=="POST" ){
         //collect name and Password
 
              //create connection with db
-        $conn=new mysqli('localhost','root','amarsql','library');
+        $conn= new mysqli('localhost','root','amarsql','library');
         //check connection
         if ($conn->connect_error) die("connection failed ".$conn->connect_error);
 

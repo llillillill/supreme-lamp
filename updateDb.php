@@ -1,3 +1,11 @@
+<?php
+session_start();
+if(!isset($_SESSION['u_id'])){
+    $_SESSION['log_in_first']="Log in to view this page";
+    header("Location: index.php");
+    exit;
+  }
+?>
 <html>
 <head>
   <title>Library de-central </title>
@@ -5,9 +13,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
-</head>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
+</head>
 <body>
 
   <header class="w3-container w3-theme w3-padding" id="myHeader">
@@ -20,50 +28,37 @@
     </div>
   </header>
 
-<?php session_start();
+<h1> update the db </h1>
 
-if(!isset($_SESSION['u_id'])){
-  $_SESSION['log_in_first']="Log in to view this page";
-  header("Location: index.php");
-  exit;
-}
-?>
+        <div class="w3-half" style="padding-left: 10px; padding-bottom: 10px;">
+            <form class="w3-container w3-card-4" action="update_db.php" method="post">
+                <ul class="w3-ul w3-border w3-hoverable">
+                    <li class="w3-theme">please give info the way it is written on the book</li> 
+                  </ul>
+        <div class="w3-section">
+              <label>Title</label> <input class="w3-input" type="text" name="title" >
+              </div>
+              <div class="w3-section">
+            <label>Author</label> <input class="w3-input" type="text" name="author" >
+              </div>
+              <div class="w3-section">
+              <label>Category</label> <input class="w3-input" type="text" name="category" required>
+              </div>
+              <div class="w3-section">
+              <label>isbn</label> <input class="w3-input" type="text" name="isbn">
+              </div>
+              <input type="submit" class="w3-button w3-black" value="Update">
+              </form>
+          </div> 
 
-
-
-
-  <form class="w3-container w3-card-4" style = "padding-bottom: 20px" method="post" action="update_db.php">
-    <h2>Update your database</h2>
-    <h4>Consider giving information exactly the way it is written on the book</h4>
-    <div class="w3-section">
-      <input class="w3-input" type="text" name="title" required>
-      <label>Title</label>
-    </div>
-    <div class="w3-section">
-      <input class="w3-input" type="text" name="author" required>
-      <label>Author</label>
-    </div>
-    <div class="w3-section">
-      <input class="w3-input" type="text" name="category">
-      <label>Category</label>
-    </div>
-    <div class="w3-section">
-      <input class="w3-input" type="text" name="isbn">
-      <label>isbn</label>
-    </div>
-   
-
-     <input type="submit" class="w3-button w3-black" value="Submit">
-  </form>
-
-<!-- Footer -->
-<footer class="w3-container w3-theme-dark w3-padding-16">
-  <div style="position:relative;bottom:55px;" class="w3-tooltip w3-right">
-    <a class="w3-text-white" href="#myHeader"><span class="w3-xlarge">
-    <i class="fa fa-chevron-circle-up"></i></span></a>
-  </div>
-  <p><a href="sign_out.php" class="w3-btn w3-theme-light" target="_blank">Log out</a></p>
-</footer>
-
-</body>
-</html
+<?php
+//inorder to pass messages 
+    //login_info wrong
+	if(!empty($_SESSION['empty_book_info']))
+	{
+		//sadat, here will be html formatting
+		echo $_SESSION['empty_book_info'];
+		unset($_SESSION['empty_book_info']);
+    }
+    
+ ?>
